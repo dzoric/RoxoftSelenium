@@ -31,19 +31,6 @@ namespace Selenium1
         [FindsBy(How = How.Id, Using = "HomeMenuIcon")]
         public IWebElement Hamburger { get; set; }
 
-        public bool IsElementPresent(By by)
-        {
-            try
-            {
-                DriverInitializationProperty.driver.FindElement(by);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
-
         public void OpenContact()
         {
             bool ContactButton = linkContact.Displayed;
