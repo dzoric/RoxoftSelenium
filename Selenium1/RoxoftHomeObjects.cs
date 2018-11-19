@@ -15,11 +15,11 @@ namespace Selenium1
         {
             PageFactory.InitElements(DriverInitializationProperty.driver, this);
         }
-
+        
         [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Kontakt')]")]
         public IWebElement linkContact { get; set; }
 
-        [FindsBy(How = How.Name,Using = "Name")]
+        [FindsBy(How = How.Name, Using = "Name")]
         public IWebElement Name { get; set; }
 
         [FindsBy(How = How.Name, Using = "Email")]
@@ -28,10 +28,37 @@ namespace Selenium1
         [FindsBy(How = How.Name, Using = "Message")]
         public IWebElement Message { get; set; }
 
+        [FindsBy(How = How.Id, Using = "HomeMenuIcon")]
+        public IWebElement Hamburger { get; set; }
+
+        public bool IsElementPresent(By by)
+        {
+            try
+            {
+                DriverInitializationProperty.driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+
         public void OpenContact()
         {
-            linkContact.Click();
-            Thread.Sleep(2000);
+            bool ContactButton = linkContact.Displayed;
+            if (ContactButton == true)
+            {
+                linkContact.Click();
+            }
+            else
+            {
+                Hamburger.Click();
+                Thread.Sleep(300);
+                linkContact.Click();
+            }
+
+
         }
 
         public void FillContactForm(string name, string eMail, string message)

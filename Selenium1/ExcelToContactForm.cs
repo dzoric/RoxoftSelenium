@@ -13,11 +13,8 @@ namespace Selenium1
     {
         private static DataTable ExcelToDataTable(string fileName)
         {
-            //open file and returns as Stream
             FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
-            //Createopenxmlreader via ExcelReaderfactory
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-            ////return as DataSet
             DataSet result = excelReader.AsDataSet(new ExcelDataSetConfiguration()
             {
                 ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
@@ -26,12 +23,9 @@ namespace Selenium1
                 }
             });
 
-            //get all the tables
             DataTableCollection table = result.Tables;
-            //Store it in DataTable
             DataTable resultTable = table["Sheet1"];
 
-            //return
             return resultTable;
 
         }
@@ -42,7 +36,6 @@ namespace Selenium1
         {
             DataTable table = ExcelToDataTable(fileName);
 
-            //iterate through the rows and columns of the Table
             for (int row = 1; row <= table.Rows.Count; row++)
             {
                 for (int col = 0; col < table.Columns.Count; col++)
@@ -53,7 +46,6 @@ namespace Selenium1
                         colName = table.Columns[col].ColumnName,
                         colValue = table.Rows[row - 1][col].ToString()
                     };
-                    //add all the details for each row
                     dataCol.Add(dtTable);
                 }
             }
@@ -63,11 +55,9 @@ namespace Selenium1
         {
             try
             {
-                //retriving data using linq to reduce much of iterations
                 string data = (from colData in dataCol
                                where colData.colName == columnName && colData.rowNumber == rowNumber
                                select colData.colValue).SingleOrDefault();
-                //var datas = dataCol.Where(x=>x.colName == columnName && x.rowNumber == rowNumber).SingleOrDefault().colValue;
                 return data.ToString();
             }
             catch (Exception e)

@@ -19,19 +19,14 @@ namespace Selenium1
         [SetUp]
         public void Initialize()
         {
-            //inicijalizacija chrome drivera
             DriverInitializationProperty.driver = new ChromeDriver();
-
-            //navigacija na url
             DriverInitializationProperty.driver.Navigate().GoToUrl("http://www.google.hr");
-
         }
 
         [Test]
         public void Execute()
         {
-            //molim promijeniti putanju kada skinete repozitorij, na trenutnu putanju 
-            //do .xlsx file-a, inače neće raditi
+            //Promijeniti putanju .xlsx file-a na putanju u kojoj se trenutno nalazi na lokalnom računalu
             ExcelToContactForm.PopulateCollection(@"C:\Users\Dusan\source\repos\Selenium1\Selenium1\OvoJeProba.xlsx");
 
             GoogleHomePageObjects googleHome = new GoogleHomePageObjects();
@@ -43,7 +38,7 @@ namespace Selenium1
             RoxoftHomeObjects roxoftHome = new RoxoftHomeObjects();
             roxoftHome.OpenContact();
             roxoftHome.FillContactForm(ExcelToContactForm.ReadData(1, "Name"), ExcelToContactForm.ReadData(1, "Email"), ExcelToContactForm.ReadData(1, "Message"));
-            Thread.Sleep(4000);
+            Thread.Sleep(3000);
         }
 
         [TearDown]

@@ -25,7 +25,7 @@ namespace Selenium1
         public GoogleSearchObjects SearchGoogle(string inputValue)
         {
             txtQ.EnterText(inputValue);
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             btnSearch.Click();
 
             return new GoogleSearchObjects();
