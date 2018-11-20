@@ -33,6 +33,9 @@ namespace Selenium1
 
         public void OpenContact()
         {
+            //Method checks if Contact button is present in navigation bar
+            //Problem occured while running the test in tabled/mobile mode
+            //where Contact button is displayed only after clicking "menu" icon
             bool ContactButton = linkContact.Displayed;
             if (ContactButton == true)
             {

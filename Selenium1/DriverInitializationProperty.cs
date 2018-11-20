@@ -9,6 +9,8 @@ namespace Selenium1
 {
     class DriverInitializationProperty
     {
+        //Created Auto-implemented propery of type IWebDriver
+        //Making it available throughout all methods
         public static IWebDriver driver { get; set; }
     }
 }

@@ -11,19 +11,25 @@ namespace Selenium1
 {
     class ExcelToContactForm
     {
+        //Method used to get data out of data sheet and populte it as DataTable
         private static DataTable ExcelToDataTable(string fileName)
         {
+            //Open file and return as Stream
             FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
+            //CreateOpenXmlReader via ExcelReaderFactory
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+            //Return as DataSet
             DataSet result = excelReader.AsDataSet(new ExcelDataSetConfiguration()
             {
                 ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
                 {
+                    //Set the First Row as Column Name
                     UseHeaderRow = true
                 }
             });
-
+            //Get all the Tables
             DataTableCollection table = result.Tables;
+            //Store it in DataTable
             DataTable resultTable = table["Sheet1"];
 
             return resultTable;
@@ -32,10 +38,12 @@ namespace Selenium1
 
         static List<Datacollection> dataCol = new List<Datacollection>();
 
+        //Populating Data into Collections
         public static void PopulateCollection(string fileName)
         {
             DataTable table = ExcelToDataTable(fileName);
 
+            //Iterate through the rows and columns of the Table
             for (int row = 1; row <= table.Rows.Count; row++)
             {
                 for (int col = 0; col < table.Columns.Count; col++)
@@ -46,15 +54,18 @@ namespace Selenium1
                         colName = table.Columns[col].ColumnName,
                         colValue = table.Rows[row - 1][col].ToString()
                     };
+                    //Add all the details for each row
                     dataCol.Add(dtTable);
                 }
             }
         }
 
+        //Reading Data from Collection
         public static string ReadData(int rowNumber, string columnName)
         {
             try
             {
+                //Retriving Data using LINQ to reduce much of iterations
                 string data = (from colData in dataCol
                                where colData.colName == columnName && colData.rowNumber == rowNumber
                                select colData.colValue).SingleOrDefault();
@@ -68,6 +79,7 @@ namespace Selenium1
         }
     }
 
+    //Used for populating value in Collection
     public class Datacollection
     {
         public int rowNumber { get; set; }
